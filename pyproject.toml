@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "notagain"
+author = "Matías Battocchia"
+author-email = "battox@gmail.com"
+home-page = "https://github.com/matiasbattocchia/notagain"
+description-file = "README.md"
+license = "BSD-3-Clause"
