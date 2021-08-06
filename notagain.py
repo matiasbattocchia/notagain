@@ -1,6 +1,6 @@
 '''Memory and disk cache for functions'''
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 import functools
 from hashlib import md5
@@ -8,6 +8,7 @@ from pathlib import Path
 import os
 import pickle
 import logging
+import copy
 
 def memoize(
         cache_dir='tmp',
@@ -53,7 +54,7 @@ def memoize(
 
             # memory cache
             if not invalidate_cache and key in cache:
-                result = cache[key]
+                result = copy.deepcopy(cache[key])
                 logging.info(f'Memory cache hit for {func.__name__} with key {key}.')
 
             # disk cache
@@ -62,7 +63,7 @@ def memoize(
                 logging.info(f'Disk cache hit for {func.__name__} with path {path}.')
 
                 if memory_cache:
-                    cache[key] = result
+                    cache[key] = copy.deepcopy(result)
 
             # evaluate function
             else:
@@ -70,7 +71,7 @@ def memoize(
                 logging.info(f'Cache miss for {func.__name__} with key {key}.')
 
                 if memory_cache:
-                    cache[key] = result
+                    cache[key] = copy.deepcopy(result)
 
                 if disk_cache:
                     pickle.dump( result, open(path, 'wb') )
